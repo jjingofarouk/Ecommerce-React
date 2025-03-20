@@ -1,67 +1,112 @@
-import React from 'react'
+import React from "react";
 import { Footer, Navbar } from "../components";
+import "./AboutPage.css"; // Custom styles for a powerful design
+
 const AboutPage = () => {
   return (
     <>
       <Navbar />
-      <div className="container my-3 py-3">
-        <h1 className="text-center">About Us</h1>
-        <hr />
-        <p className="lead text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-          facere doloremque veritatis odit similique sequi. Odit amet fuga nam
-          quam quasi facilis sed doloremque saepe sint perspiciatis explicabo
-          totam vero quas provident ipsam, veritatis nostrum velit quos
-          recusandae est mollitia esse fugit dolore laudantium. Ex vel explicabo
-          earum unde eligendi autem praesentium, doloremque distinctio nesciunt
-          porro tempore quis eaque labore voluptatibus ea necessitatibus
-          exercitationem tempora molestias. Ad consequuntur veniam sequi ullam
-          tempore vel tenetur soluta dolore sunt maxime aliquam corporis est,
-          quo saepe dolorem optio minus sint nemo totam dolorum! Reprehenderit
-          delectus expedita a alias nam recusandae illo debitis repellat libero,
-          quasi explicabo molestiae saepe, dolorem tempore itaque eveniet quam
-          dignissimos blanditiis excepturi harum numquam vel nihil? Ipsum
-        </p>
+      <div className="about-container">
+        {/* Hero Section */}
+        <section className="about-hero">
+          <div className="hero-overlay">
+            <h1 className="hero-title">Frank Shoe World</h1>
+            <p className="hero-subtitle">
+              Where Timeless Craftsmanship Meets Modern Elegance
+            </p>
+          </div>
+        </section>
 
-        <h2 className="text-center py-4">Our Products</h2>
-        <div className="row">
-          <div className="col-md-3 col-sm-6 mb-3 px-3">
-            <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
-              <div className="card-body">
-                <h5 className="card-title text-center">Mens's Clothing</h5>
+        {/* Our Story Section */}
+        <section className="about-story container my-5 py-5">
+          <h2 className="section-title text-center">Our Story</h2>
+          <hr className="section-divider" />
+          <p className="lead text-center">
+            At Frank Shoe World, we believe footwear is more than function—it’s
+            an expression of identity. Founded with a passion for impeccable
+            design and unparalleled quality, we craft each pair to elevate your
+            every step. From urban-ready sneakers to statement dress loafers,
+            our collections blend heritage techniques with contemporary flair,
+            offering a wardrobe of sophistication for the discerning soul.
+          </p>
+        </section>
+
+        {/* Our Craftsmanship Section */}
+        <section className="about-craftsmanship container my-5 py-5">
+          <h2 className="section-title text-center">Our Craftsmanship</h2>
+          <hr className="section-divider" />
+          <div className="row">
+            <div className="col-md-6">
+              <p className="craft-text">
+                Every stitch, every sole, every detail is a testament to our
+                dedication. We source premium materials—breathable canvas,
+                butter-soft leather, high-shine patents—to create shoes that
+                feel as extraordinary as they look. Our artisans pour their
+                expertise into each design, ensuring durability and comfort
+                without compromising on style.
+              </p>
+            </div>
+            <div className="col-md-6">
+              <img
+                src="/assets/images/shoes/canvas.jpg" // Use your own image
+                alt="Craftsmanship"
+                className="craft-image img-fluid"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Our Collections Section */}
+        <section className="about-collections container my-5 py-5">
+          <h2 className="section-title text-center">Our Collections</h2>
+          <hr className="section-divider" />
+          <div className="row">
+            <div className="col-md-3 col-sm-6 mb-4">
+              <div className="collection-card">
+                <img
+                  src="/assets/images/shoes/canvas.jpg"
+                  alt="Sneakers"
+                  className="collection-img img-fluid"
+                />
+                <h5 className="collection-title text-center">Sneakers</h5>
+              </div>
+            </div>
+            <div className="col-md-3 col-sm-6 mb-4">
+              <div className="collection-card">
+                <img
+                  src="/assets/images/shoes/casualloafers.jpg"
+                  alt="Casual Loafers"
+                  className="collection-img img-fluid"
+                />
+                <h5 className="collection-title text-center">Casual Loafers</h5>
+              </div>
+            </div>
+            <div className="col-md-3 col-sm-6 mb-4">
+              <div className="collection-card">
+                <img
+                  src="/assets/images/shoes/dress_loafers.jpg"
+                  alt="Dress Loafers"
+                  className="collection-img img-fluid"
+                />
+                <h5 className="collection-title text-center">Dress Loafers</h5>
+              </div>
+            </div>
+            <div className="col-md-3 col-sm-6 mb-4">
+              <div className="collection-card">
+                <img
+                  src="/assets/images/shoes/canvas.jpg" // Replace with a children’s shoe image if available
+                  alt="Children’s Shoes"
+                  className="collection-img img-fluid"
+                />
+                <h5 className="collection-title text-center">Children’s Shoes</h5>
               </div>
             </div>
           </div>
-          <div className="col-md-3 col-sm-6 mb-3 px-3">
-            <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
-              <div className="card-body">
-                <h5 className="card-title text-center">Women's Clothing</h5>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 col-sm-6 mb-3 px-3">
-            <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
-              <div className="card-body">
-                <h5 className="card-title text-center">Jewelery</h5>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 col-sm-6 mb-3 px-3">
-            <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
-              <div className="card-body">
-                <h5 className="card-title text-center">Electronics</h5>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default AboutPage
+export default AboutPage;
