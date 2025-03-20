@@ -1,44 +1,56 @@
 import React from "react";
+import "./Pagination.css"; // Import custom styles
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   if (totalPages <= 1) return null; // Don’t render if only one page
 
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5; // Limit visible page numbers for a clean look
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    // Adjust startPage if endPage is at the max
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    // Add page numbers
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          className={`pagination-btn ${currentPage === i ? "active" : ""}`}
+          onClick={() => onPageChange(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return pages;
+  };
+
   return (
-    <nav aria-label="Product navigation" className="mt-4">
-      <ul className="pagination justify-content-center">
-        <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-          <button
-            className="page-link"
-            onClick={() => onPageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-        </li>
-        {[...Array(totalPages)].map((_, index) => (
-          <li
-            key={index}
-            className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
-          >
-            <button
-              className="page-link"
-              onClick={() => onPageChange(index + 1)}
-            >
-              {index + 1}
-            </button>
-          </li>
-        ))}
-        <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-          <button
-            className="page-link"
-            onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </li>
-      </ul>
-    </nav>
+    <div className="pagination-container">
+      <button
+        className="pagination-btn pagination-arrow"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <span className="arrow left"></span>
+      </button>
+
+      {renderPageNumbers()}
+
+      <button
+        className="pagination-btn pagination-arrow"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <span className="arrow right"></span>
+      </button>
+    </div>
   );
 };
 
