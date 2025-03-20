@@ -114,7 +114,7 @@ const Cart = () => {
                               }}
                             >
                               <img
-                                src={`/${item.imageUrl}`} // Ensure absolute path
+                                src={item.imageUrl} // Ensure absolute path
                                 alt={item.title}
                                 className="img-fluid" // Bootstrap class for responsiveness
                                 style={{ objectFit: "contain" }} // Maintains aspect ratio
@@ -130,7 +130,9 @@ const Cart = () => {
                             </p>
                             <small>
                               {item.stockQuantity
-                                ? `${item.stockQuantity - item.qty} left in stock`
+                                ? `${
+                                    item.stockQuantity - item.qty
+                                  } left in stock`
                                 : "Stock unlimited"}
                             </small>
                           </div>
