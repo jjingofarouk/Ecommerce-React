@@ -45,7 +45,7 @@ const Cart = () => {
   const undoLast = () => dispatch(undoCart());
 
   const applyPromo = () => {
-    const codes = { UGSAVE10: 0.1, BUYLOCAL: 0.2 }; // 10% and 20% off
+    const codes = { UGSAVE10: 0.1, BUYLOCAL: 0.2 };
     if (codes[promoCode]) {
       dispatch(applyDiscount(codes[promoCode]));
       alert("Promo code applied!");
@@ -104,13 +104,22 @@ const Cart = () => {
                     {state.cart.map((item) => (
                       <div key={item.id}>
                         <div className="row d-flex align-items-center">
-                          <div className="col-lg-3 col-md-12">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.title}
-                              width={100}
-                              height={75}
-                            />
+                          <div className="col-lg-3 col-md-12 mb-3 mb-lg-0">
+                            <div
+                              style={{
+                                width: "100%",
+                                maxWidth: "120px", // Slightly larger but constrained
+                                height: "auto",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <img
+                                src={`/${item.imageUrl}`} // Ensure absolute path
+                                alt={item.title}
+                                className="img-fluid" // Bootstrap class for responsiveness
+                                style={{ objectFit: "contain" }} // Maintains aspect ratio
+                              />
+                            </div>
                           </div>
                           <div className="col-lg-5 col-md-6">
                             <p>
@@ -121,9 +130,7 @@ const Cart = () => {
                             </p>
                             <small>
                               {item.stockQuantity
-                                ? `${
-                                    item.stockQuantity - item.qty
-                                  } left in stock`
+                                ? `${item.stockQuantity - item.qty} left in stock`
                                 : "Stock unlimited"}
                             </small>
                           </div>
