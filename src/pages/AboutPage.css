@@ -63,7 +63,7 @@
 .craft-image {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition dziennik-transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .craft-image:hover {
