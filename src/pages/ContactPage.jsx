@@ -12,7 +12,7 @@ const ContactContainer = styled.div`
 `;
 
 const ContactTitle = styled.h1`
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 3.5rem;
   font-weight: 700;
   text-align: center;
@@ -180,9 +180,7 @@ const ContactPage = () => {
                   required
                 />
               </FormField>
-              <SubmitButton type="submit">
-                Send Message
-              </SubmitButton>
+              <SubmitButton type="submit">Send Message</SubmitButton>
             </StyledForm>
           </FormContainer>
         </motion.div>
@@ -191,5 +189,5 @@ const ContactPage = () => {
     </>
   );
 };
- 
+
 export default ContactPage;
