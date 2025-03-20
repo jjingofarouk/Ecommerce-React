@@ -32,7 +32,9 @@ const Product = () => {
       setLoading(false);
 
       const related = products.filter(
-        (p) => p.category.some((cat) => selectedProduct.category.includes(cat)) && p.id !== selectedProduct.id
+        (p) =>
+          p.category.some((cat) => selectedProduct.category.includes(cat)) &&
+          p.id !== selectedProduct.id
       );
       setSimilarProducts(related);
       setLoading2(false);
@@ -72,7 +74,9 @@ const Product = () => {
           />
         </div>
         <div className="col-md-6 col-md-6 py-5">
-          <h4 className="text-uppercase text-muted">{product.category.join(", ")}</h4>
+          <h4 className="text-uppercase text-muted">
+            {product.category.join(", ")}
+          </h4>
           <h1 className="display-5">{product.name}</h1>
           <p className="lead">
             {product.averageRating} <i className="fa fa-star"></i>
@@ -81,7 +85,10 @@ const Product = () => {
             {product.price.toLocaleString()} {product.currency}
           </h3>
           <p className="lead">{product.description}</p>
-          <button className="btn btn-outline-dark" onClick={() => addProduct(product)}>
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => addProduct(product)}
+          >
             Add to Cart
           </button>
           <Link to="/cart" className="btn btn-dark mx-3">
@@ -120,10 +127,13 @@ const Product = () => {
               <h5 className="card-title">{item.name.substring(0, 15)}...</h5>
             </div>
             <div className="card-body">
-              <Link to={`/product/${item.id}`} className="btn btn-dark m-1">
+              <Link to={`/product/UGX{item.id}`} className="btn btn-dark m-1">
                 Buy Now
               </Link>
-              <button className="btn btn-dark m-1" onClick={() => addProduct(item)}>
+              <button
+                className="btn btn-dark m-1"
+                onClick={() => addProduct(item)}
+              >
                 Add to Cart
               </button>
             </div>
@@ -137,7 +147,9 @@ const Product = () => {
     <>
       <Navbar />
       <div className="container">
-        <div className="row">{loading || !product ? <Loading /> : <ShowProduct />}</div>
+        <div className="row">
+          {loading || !product ? <Loading /> : <ShowProduct />}
+        </div>
         <div className="row my-5 py-5">
           <div className="d-none d-md-block">
             <h2>You may also Like</h2>

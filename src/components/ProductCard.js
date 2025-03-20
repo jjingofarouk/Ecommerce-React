@@ -11,8 +11,8 @@ const ProductCard = ({ product, onAddToCart }) => {
           alt={product.name}
           style={{
             objectFit: "contain", // Maintains aspect ratio
-            maxHeight: "300px",   // Limits height
-            width: "100%",        // Fits card width
+            maxHeight: "300px", // Limits height
+            width: "100%", // Fits card width
           }}
         />
         <div className="card-body">
@@ -25,10 +25,13 @@ const ProductCard = ({ product, onAddToCart }) => {
           </li>
         </ul>
         <div className="card-body">
-          <Link to={`/product/${product.id}`} className="btn btn-dark m-1">
+          <Link to={`/product/UGX{product.id}`} className="btn btn-dark m-1">
             Buy Now
           </Link>
-          <button className="btn btn-dark m-1" onClick={() => onAddToCart(product)}>
+          <button
+            className="btn btn-dark m-1"
+            onClick={() => onAddToCart(product)}
+          >
             Add to Cart
           </button>
         </div>
