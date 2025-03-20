@@ -1,0 +1,73 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; /* Space between buttons */
+  padding: 20px 0;
+  font-family: 'Inter', sans-serif; /* Match your app’s font if applicable */
+}
+
+.pagination-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%; /* Circular buttons */
+  background-color: #f5f5f5; /* Light gray background */
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transitions */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #e0e0e0; /* Slightly darker on hover */
+  transform: scale(1.05); /* Subtle zoom effect */
+}
+
+.pagination-btn.active {
+  background-color: #007bff; /* Primary color (customize as needed) */
+  color: white;
+  font-weight: 600;
+}
+
+.pagination-btn:disabled {
+  background-color: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Arrow buttons */
+.pagination-arrow {
+  position: relative;
+  background-color: transparent;
+}
+
+.arrow {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: solid #666;
+  border-width: 0 2px 2px 0;
+  transition: border-color 0.3s ease;
+}
+
+.arrow.left {
+  transform: rotate(135deg);
+}
+
+.arrow.right {
+  transform: rotate(-45deg);
+}
+
+.pagination-arrow:hover:not(:disabled) .arrow {
+  border-color: #007bff; /* Match active color */
+}
+
+/* Ensure arrows stay visible when button is disabled */
+.pagination-arrow:disabled .arrow {
+  border-color: #ccc;
+}
