@@ -2,7 +2,7 @@
 .about-hero {
   position: relative;
   height: 60vh;
-  background: url("/assets/images/shoes/hero-bg.jpeg") no-repeat center center/cover; /* Add a hero image */
+  background: url("/assets/images/shoes/hero.jpeg") no-repeat center center/cover; /* Add a hero image */
   display: flex;
   align-items: center;
   justify-content: center;
