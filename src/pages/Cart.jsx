@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import { Footer, Navbar } from "../components";
 import { useSelector, useDispatch } from "react-redux";
-import { addCart, delCart, updateCartQuantity, clearCart, saveForLater, addBackToCart, applyDiscount, toggleFavorite, syncCart, undoCart } from "../redux/action";
+import {
+  addCart,
+  delCart,
+  updateCartQuantity,
+  clearCart,
+  saveForLater,
+  addBackToCart,
+  applyDiscount,
+  toggleFavorite,
+  syncCart,
+  undoCart,
+} from "../redux/action";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
@@ -24,7 +35,8 @@ const Cart = () => {
 
   const addItem = (product) => dispatch(addCart(product));
   const removeItem = (product) => dispatch(delCart(product));
-  const updateQty = (productId, qty) => dispatch(updateCartQuantity(productId, parseInt(qty)));
+  const updateQty = (productId, qty) =>
+    dispatch(updateCartQuantity(productId, parseInt(qty)));
   const clearAll = () => dispatch(clearCart());
   const saveItem = (product) => dispatch(saveForLater(product));
   const addBack = (product) => dispatch(addBackToCart(product));
@@ -33,7 +45,7 @@ const Cart = () => {
   const undoLast = () => dispatch(undoCart());
 
   const applyPromo = () => {
-    const codes = { "UGSAVE10": 0.1, "BUYLOCAL": 0.2 }; // 10% and 20% off
+    const codes = { UGSAVE10: 0.1, BUYLOCAL: 0.2 }; // 10% and 20% off
     if (codes[promoCode]) {
       dispatch(applyDiscount(codes[promoCode]));
       alert("Promo code applied!");
@@ -68,13 +80,23 @@ const Cart = () => {
                 <div className="card mb-4">
                   <div className="card-header py-3">
                     <h5 className="mb-0">Item List</h5>
-                    <button className="btn btn-outline-danger btn-sm" onClick={clearAll}>
+                    <button
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={clearAll}
+                    >
                       Clear Cart
                     </button>
-                    <button className="btn btn-outline-secondary btn-sm mx-2" onClick={undoLast} disabled={!state.prevState}>
+                    <button
+                      className="btn btn-outline-secondary btn-sm mx-2"
+                      onClick={undoLast}
+                      disabled={!state.prevState}
+                    >
                       Undo Last Action
                     </button>
-                    <button className="btn btn-outline-info btn-sm" onClick={syncWithServer}>
+                    <button
+                      className="btn btn-outline-info btn-sm"
+                      onClick={syncWithServer}
+                    >
                       Sync Cart
                     </button>
                   </div>
@@ -83,25 +105,46 @@ const Cart = () => {
                       <div key={item.id}>
                         <div className="row d-flex align-items-center">
                           <div className="col-lg-3 col-md-12">
-                            <img src={`/${item.image}`} alt={item.title} width={100} height={75} />
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              width={100}
+                              height={75}
+                            />
                           </div>
                           <div className="col-lg-5 col-md-6">
                             <p>
                               <strong>{item.title}</strong>
-                              {item.isFavorite && <i className="fas fa-heart text-danger mx-2"></i>}
+                              {item.isFavorite && (
+                                <i className="fas fa-heart text-danger mx-2"></i>
+                              )}
                             </p>
-                            <small>{item.stockQuantity ? `${item.stockQuantity - item.qty} left in stock` : "Stock unlimited"}</small>
+                            <small>
+                              {item.stockQuantity
+                                ? `${
+                                    item.stockQuantity - item.qty
+                                  } left in stock`
+                                : "Stock unlimited"}
+                            </small>
                           </div>
                           <div className="col-lg-4 col-md-6">
-                            <div className="d-flex mb-2" style={{ maxWidth: "300px" }}>
-                              <button className="btn px-3" onClick={() => removeItem(item)}>
+                            <div
+                              className="d-flex mb-2"
+                              style={{ maxWidth: "300px" }}
+                            >
+                              <button
+                                className="btn px-3"
+                                onClick={() => removeItem(item)}
+                              >
                                 <i className="fas fa-minus"></i>
                               </button>
                               <input
                                 type="number"
                                 className="form-control mx-2 text-center"
                                 value={item.qty}
-                                onChange={(e) => updateQty(item.id, e.target.value)}
+                                onChange={(e) =>
+                                  updateQty(item.id, e.target.value)
+                                }
                                 min="0"
                                 max={item.stockQuantity || undefined}
                                 style={{ width: "60px" }}
@@ -109,20 +152,29 @@ const Cart = () => {
                               <button
                                 className="btn px-3"
                                 onClick={() => addItem(item)}
-                                disabled={item.qty >= (item.stockQuantity || Infinity)}
+                                disabled={
+                                  item.qty >= (item.stockQuantity || Infinity)
+                                }
                               >
                                 <i className="fas fa-plus"></i>
                               </button>
                             </div>
                             <p className="text-start text-md-center">
                               <strong>
-                                <span className="text-muted">{item.qty}</span> x {item.price} UGX
+                                <span className="text-muted">{item.qty}</span> x{" "}
+                                {item.price} UGX
                               </strong>
                             </p>
-                            <button className="btn btn-outline-secondary btn-sm" onClick={() => saveItem(item)}>
+                            <button
+                              className="btn btn-outline-secondary btn-sm"
+                              onClick={() => saveItem(item)}
+                            >
                               Save for Later
                             </button>
-                            <button className="btn btn-outline-warning btn-sm mx-2" onClick={() => toggleFav(item.id)}>
+                            <button
+                              className="btn btn-outline-warning btn-sm mx-2"
+                              onClick={() => toggleFav(item.id)}
+                            >
                               {item.isFavorite ? "Unfavorite" : "Favorite"}
                             </button>
                           </div>
@@ -139,9 +191,15 @@ const Cart = () => {
                     </div>
                     <div className="card-body">
                       {state.savedItems.map((item) => (
-                        <div key={item.id} className="d-flex justify-content-between align-items-center">
+                        <div
+                          key={item.id}
+                          className="d-flex justify-content-between align-items-center"
+                        >
                           <p>{item.title}</p>
-                          <button className="btn btn-outline-dark" onClick={() => addBack(item)}>
+                          <button
+                            className="btn btn-outline-dark"
+                            onClick={() => addBack(item)}
+                          >
                             Move to Cart
                           </button>
                         </div>
@@ -163,7 +221,10 @@ const Cart = () => {
                       placeholder="Enter promo code"
                       className="form-control mb-2"
                     />
-                    <button className="btn btn-outline-dark mb-3" onClick={applyPromo}>
+                    <button
+                      className="btn btn-outline-dark mb-3"
+                      onClick={applyPromo}
+                    >
                       Apply Promo
                     </button>
                     <ul className="list-group list-group-flush">
@@ -186,7 +247,10 @@ const Cart = () => {
                         </span>
                       </li>
                     </ul>
-                    <button className="btn btn-dark btn-lg btn-block" onClick={handleCheckout}>
+                    <button
+                      className="btn btn-dark btn-lg btn-block"
+                      onClick={handleCheckout}
+                    >
                       Go to checkout
                     </button>
                   </div>
@@ -205,7 +269,11 @@ const Cart = () => {
       <div className="container my-3 py-3">
         <h1 className="text-center">Cart</h1>
         <hr />
-        {state.cart.length > 0 || state.savedItems.length > 0 ? <ShowCart /> : <EmptyCart />}
+        {state.cart.length > 0 || state.savedItems.length > 0 ? (
+          <ShowCart />
+        ) : (
+          <EmptyCart />
+        )}
       </div>
       <Footer />
     </>
