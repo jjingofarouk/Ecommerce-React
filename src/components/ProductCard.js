@@ -7,9 +7,13 @@ const ProductCard = ({ product, onAddToCart }) => {
       <div className="card text-center h-100">
         <img
           className="card-img-top p-3"
-          src={product.imageUrl}
+          src={product.imageUrl} // Use imageUrl directly
           alt={product.name}
-          height={300}
+          style={{
+            objectFit: "contain", // Maintains aspect ratio
+            maxHeight: "300px",   // Limits height
+            width: "100%",        // Fits card width
+          }}
         />
         <div className="card-body">
           <h5 className="card-title">{product.name.substring(0, 12)}...</h5>
@@ -24,10 +28,7 @@ const ProductCard = ({ product, onAddToCart }) => {
           <Link to={`/product/${product.id}`} className="btn btn-dark m-1">
             Buy Now
           </Link>
-          <button
-            className="btn btn-dark m-1"
-            onClick={() => onAddToCart(product)}
-          >
+          <button className="btn btn-dark m-1" onClick={() => onAddToCart(product)}>
             Add to Cart
           </button>
         </div>
