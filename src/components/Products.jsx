@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 // Lazy-loaded components
 const ProductCard = lazy(() => import("./ProductCard"));
 const FilterButtons = lazy(() => import("./FilterButtons"));
-const LoadingSkeleton = lazy(() => import("./LoadingSkeleton"));
+const PulsingSkeleton = lazy(() => import("./PulsingSkeleton"));
 const ProductGrid = lazy(() => import("./ProductGrid"));
 
 const Products = () => {
@@ -172,7 +172,7 @@ const Products = () => {
       </div>
 
       {/* Product Grid */}
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={<PulsingSkeleton />}>
         <ProductGrid>
           <AnimatePresence>
             {currentProducts.map((product) => (
@@ -212,7 +212,7 @@ const Products = () => {
       <hr className="w-25 mx-auto mb-5" style={{ borderColor: "#ddd" }} />
       {loading ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <LoadingSkeleton />
+          <PulsingSkeleton />
         </Suspense>
       ) : (
         <ShowProducts />
