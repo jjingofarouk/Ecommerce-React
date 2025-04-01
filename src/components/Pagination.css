@@ -2,57 +2,89 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px; /* Space between buttons */
-  padding: 20px 0;
-  font-family: 'Inter', sans-serif; /* Match your app’s font if applicable */
+  gap: 2px; /* Amazon uses tighter spacing */
+  padding: 16px 0;
+  font-family: 'Arial', sans-serif; /* Amazon uses a system font similar to Arial */
 }
 
 .pagination-btn {
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%; /* Circular buttons */
-  background-color: #f5f5f5; /* Light gray background */
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid #D5D9D9; /* Amazon's border color */
+  border-radius: 3px; /* Amazon uses square buttons with slight rounding */
+  background-color: #fff; /* White background */
+  color: #0F1111; /* Amazon's text color */
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.3s ease; /* Smooth transitions */
+  transition: all 0.1s ease; /* Amazon uses faster transitions */
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 2px;
+  padding: 0 9px;
+  box-shadow: 0 2px 5px rgba(15, 17, 17, 0.05); /* Subtle shadow */
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background-color: #e0e0e0; /* Slightly darker on hover */
-  transform: scale(1.05); /* Subtle zoom effect */
+  background-color: #F7FAFA; /* Light gray on hover */
+  border-color: #A2A6AC;
 }
 
 .pagination-btn.active {
-  background-color: #007bff; /* Primary color (customize as needed) */
-  color: white;
-  font-weight: 600;
+  background-color: #FFA41C; /* Amazon orange */
+  border-color: #FFA41C;
+  color: #0F1111;
+  font-weight: 700;
+  box-shadow: none;
 }
 
 .pagination-btn:disabled {
-  background-color: #f0f0f0;
-  color: #aaa;
+  background-color: #F7F8F8;
+  color: #6C7778;
   cursor: not-allowed;
+  border-color: #E0E0E0;
+}
+
+/* Ellipsis styling */
+.pagination-ellipsis {
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0F1111;
+  font-size: 13px;
 }
 
 /* Arrow buttons */
 .pagination-arrow {
-  position: relative;
-  background-color: transparent;
+  background-color: #fff;
+  border: 1px solid #D5D9D9;
+  border-radius: 3px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-arrow:hover:not(:disabled) {
+  background-color: #F7FAFA;
+  border-color: #A2A6AC;
+}
+
+.pagination-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .arrow {
   display: block;
-  width: 10px;
-  height: 10px;
-  border: solid #666;
-  border-width: 0 2px 2px 0;
-  transition: border-color 0.3s ease;
+  width: 8px;
+  height: 8px;
+  border: solid #555;
+  border-width: 0 1px 1px 0;
 }
 
 .arrow.left {
@@ -63,11 +95,20 @@
   transform: rotate(-45deg);
 }
 
-.pagination-arrow:hover:not(:disabled) .arrow {
-  border-color: #007bff; /* Match active color */
+/* Previous/Next text styling */
+.pagination-prev,
+.pagination-next {
+  min-width: auto;
+  padding: 0 10px;
 }
 
-/* Ensure arrows stay visible when button is disabled */
-.pagination-arrow:disabled .arrow {
-  border-color: #ccc;
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .pagination-container {
+    flex-wrap: wrap;
+  }
+  
+  .pagination-text {
+    display: none; /* Hide text on mobile */
+  }
 }
