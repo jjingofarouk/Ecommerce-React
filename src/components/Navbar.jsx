@@ -2,179 +2,240 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FaSignInAlt, FaUserPlus, FaShoppingCart, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion'; // Added for animations
 
 const Navbar = () => {
   const cart = useSelector((state) => state.handleCart);
-  const [isOpen, setIsOpen] = useState(false); // For mobile menu toggle
-  const [searchQuery, setSearchQuery] = useState(''); // For search functionality
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `/products?search=${searchQuery}`; // Redirect to products with query
+      window.location.href = `/products?search=${searchQuery}`;
     }
   };
 
+  // Animation variants
+  const menuVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: 'spring', 
+        stiffness: 300,
+        damping: 20,
+        staggerChildren: 0.1 
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top shadow-lg">
+    <motion.nav 
+      className="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top shadow-lg"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 120 }}
+    >
       <div className="container d-flex align-items-center justify-content-between">
-        {/* Brand Logo */}
-        <NavLink className="navbar-brand fw-bold fs-3" to="/">
-          <span className="text-gold">Frank</span> Shoe World
-        </NavLink>
+        {/* Animated Brand Logo */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <NavLink className="navbar-brand fw-bold fs-3" to="/">
+            <span className="text-gold">Frank</span> Shoe World
+          </NavLink>
+        </motion.div>
 
         {/* Mobile Menu Toggle */}
-        <button
+        <motion.button
           className="navbar-toggler border-0"
-          type="button"
+          whileTap={{ scale: 0.9 }}
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle navigation"
         >
-          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
+          <AnimatePresence mode="wait">
+            {isOpen ? (
+              <motion.div
+                key="times"
+                initial={{ rotate: -90 }}
+                animate={{ rotate: 0 }}
+                exit={{ rotate: 90 }}
+              >
+                <FaTimes size={24} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="bars"
+                initial={{ rotate: 90 }}
+                animate={{ rotate: 0 }}
+                exit={{ rotate: -90 }}
+              >
+                <FaBars size={24} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
 
         {/* Navbar Content */}
-        <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarSupportedContent">
-          {/* Navigation Links */}
-          <ul className="navbar-nav mx-auto my-2 text-center align-items-lg-center">
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link px-3 ${isActive ? 'active-link' : ''}`}
-                to="/"
-                end
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link px-3 ${isActive ? 'active-link' : ''}`}
-                to="/products"
-              >
-                Products
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link px-3 ${isActive ? 'active-link' : ''}`}
-                to="/about"
-              >
-                About
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={({ isActive }) => `nav-link px-3 ${isActive ? 'active-link' : ''}`}
-                to="/contact"
-              >
-                Contact
-              </NavLink>
-            </li>
-          </ul>
+        <AnimatePresence>
+          <motion.div 
+            className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            {/* Navigation Links */}
+            <ul className="navbar-nav mx-auto my-2 text-center align-items-lg-center">
+              {['/', '/products', '/about', '/contact'].map((path, index) => (
+                <motion.li 
+                  key={path} 
+                  className="nav-item"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <NavLink
+                    className={({ isActive }) => `nav-link px-3 ${isActive ? 'active-link' : ''}`}
+                    to={path}
+                    end={path === '/'}
+                  >
+                    {['Home', 'Products', 'About', 'Contact'][index]}
+                  </NavLink>
+                </motion.li>
+              ))}
+            </ul>
 
-          {/* Right Section: Search, Auth, Cart */}
-          <div className="d-flex flex-column flex-lg-row align-items-center gap-3 text-center">
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="d-flex align-items-center">
-              <input
-                type="text"
-                className="form-control rounded-0 border-0 search-input"
-                placeholder="Search shoes..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="btn btn-gold ms-2">
-                <FaSearch />
-              </button>
-            </form>
+            {/* Right Section */}
+            <motion.div 
+              className="d-flex flex-column flex-lg-row align-items-center gap-3"
+              variants={itemVariants}
+            >
+              {/* Animated Search Bar */}
+              <form onSubmit={handleSearch} className="d-flex align-items-center">
+                <motion.input
+                  type="text"
+                  className="form-control rounded-0 border-0 search-input"
+                  placeholder="Search shoes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  whileFocus={{ scale: 1.02, borderColor: '#d4af37' }}
+                />
+                <motion.button 
+                  type="submit" 
+                  className="btn btn-gold ms-2"
+                  whileHover={{ scale: 1.1, rotate: 360 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FaSearch />
+                </motion.button>
+              </form>
 
-            {/* Auth & Cart Buttons */}
-            <div className="buttons d-flex gap-2">
-              <NavLink to="/login" className="btn btn-outline-light rounded-0 px-3">
-                <FaSignInAlt className="me-1" /> Login
-              </NavLink>
-              <NavLink to="/register" className="btn btn-outline-light rounded-0 px-3">
-                <FaUserPlus className="me-1" /> Register
-              </NavLink>
-              <NavLink to="/cart" className="btn btn-gold rounded-0 px-3 position-relative">
-                <FaShoppingCart className="me-1" /> Cart
-                {cart.length > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {cart.length}
-                  </span>
-                )}
-              </NavLink>
-            </div>
-          </div>
-        </div>
+              {/* Auth & Cart Buttons */}
+              <div className="buttons d-flex gap-2">
+                {[
+                  { to: '/login', icon: FaSignInAlt, text: 'Login' },
+                  { to: '/register', icon: FaUserPlus, text: 'Register' },
+                  { to: '/cart', icon: FaShoppingCart, text: 'Cart', hasBadge: true }
+                ].map((btn, index) => (
+                  <motion.div
+                    key={btn.to}
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <NavLink 
+                      to={btn.to} 
+                      className={`btn ${btn.hasBadge ? 'btn-gold' : 'btn-outline-light'} rounded-0 px-3 position-relative`}
+                    >
+                      <btn.icon className="me-1" /> {btn.text}
+                      {btn.hasBadge && cart.length > 0 && (
+                        <motion.span
+                          className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: 'spring', stiffness: 500 }}
+                        >
+                          {cart.length}
+                        </motion.span>
+                      )}
+                    </NavLink>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Inline Styles */}
+      {/* Enhanced Styles */}
       <style jsx>{`
         .navbar {
-          transition: background-color 0.3s ease;
-          z-index: 1000;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(5px);
         }
         .navbar-brand {
           font-family: 'Inter', sans-serif;
           letter-spacing: 1px;
-        }
-        .text-gold {
-          color: #d4af37; /* Gold accent for brand name */
+          background: linear-gradient(45deg, #d4af37, #fff);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
         }
         .nav-link {
           color: #fff !important;
           font-weight: 500;
-          transition: color 0.3s ease;
+          position: relative;
+          overflow: hidden;
         }
-        .nav-link:hover {
-          color: #d4af37 !important;
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: #d4af37;
+          transition: width 0.3s ease;
         }
-        .active-link {
-          color: #d4af37 !important;
-          border-bottom: 2px solid #d4af37;
+        .nav-link:hover::after {
+          width: 100%;
+        }
+        .active-link::after {
+          width: 100%;
         }
         .btn-gold {
-          background-color: #d4af37;
+          background: linear-gradient(45deg, #d4af37, #b8860b);
           color: #fff;
           border: none;
-          transition: transform 0.2s ease;
-        }
-        .btn-gold:hover {
-          transform: scale(1.05);
-          color: #fff;
+          box-shadow: 0 2px 5px rgba(212, 175, 55, 0.3);
         }
         .search-input {
-          background-color: #333;
+          background: rgba(255, 255, 255, 0.1);
           color: #fff;
-          max-width: 200px;
+          transition: all 0.3s ease;
         }
-        .search-input::placeholder {
-          color: #aaa;
-        }
-        .badge {
-          font-size: 0.7rem;
+        .search-input:focus {
+          background: rgba(255, 255, 255, 0.2);
+          box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
         @media (max-width: 991px) {
-          .navbar-collapse {
-            background-color: #212529;
-            padding: 1rem;
-            border-radius: 0 0 8px 8px;
-          }
-          .nav-link {
-            padding: 0.75rem 0 !important;
-          }
-          .buttons {
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-          }
-          .search-input {
-            max-width: 100%;
+          .navbar-collapse.show {
+            background: rgba(33, 37, 41, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
           }
         }
       `}</style>
-    </nav>
+    </motion.nav>
   );
 };
 
