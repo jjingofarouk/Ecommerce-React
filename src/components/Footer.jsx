@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { FaGithub, FaInstagram, FaWhatsapp, FaYoutube, FaSkype, FaArrowUp } from "react-icons/fa";
+import {
+  FaGithub,
+  FaInstagram,
+  FaWhatsapp,
+  FaYoutube,
+  FaSkype,
+  FaArrowUp,
+} from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion"; // Added for animations
 
 const Footer = () => {
@@ -18,20 +25,20 @@ const Footer = () => {
   // Animation variants
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const iconVariants = {
     hover: { scale: 1.2, rotate: 10 },
-    tap: { scale: 0.9 }
+    tap: { scale: 0.9 },
   };
 
   return (
-    <motion.footer 
+    <motion.footer
       className="site-footer bg-dark text-white py-5"
       initial="hidden"
       whileInView="visible"
@@ -41,24 +48,18 @@ const Footer = () => {
       <div className="container">
         <div className="row g-4">
           {/* Brand Section */}
-          <motion.div 
-            className="col-lg-4 col-md-6"
-            variants={sectionVariants}
-          >
-            <motion.h4 
-              className="mb-3"
-              whileHover={{ scale: 1.05 }}
-            >
+          <motion.div className="col-lg-4 col-md-6" variants={sectionVariants}>
+            <motion.h4 className="mb-3" whileHover={{ scale: 1.05 }}>
               <a href="/" className="text-white text-decoration-none">
-                <span className="fw-bold text-gold">Frank</span> Shoe World
+                <span className="fw-bold text-gold">ZANO!</span>
               </a>
             </motion.h4>
             <p className="text-muted small">
-              Step into Style with premium footwear from Kampala's finest. 
+              Step into Style with premium footwear from Kampala's finest.
               Quality, comfort, and elegance in every stride.
             </p>
             <p className="text-muted small mb-0">
-              © {new Date().getFullYear()} Frank Shoe World. All Rights Reserved.
+              © {new Date().getFullYear()} ZANO!. All Rights Reserved.
             </p>
             <p className="text-muted small">
               Crafted by{" "}
@@ -74,10 +75,7 @@ const Footer = () => {
           </motion.div>
 
           {/* Navigation Links */}
-          <motion.div 
-            className="col-lg-4 col-md-6"
-            variants={sectionVariants}
-          >
+          <motion.div className="col-lg-4 col-md-6" variants={sectionVariants}>
             <h5 className="mb-3">Explore</h5>
             <ul className="list-unstyled">
               {[
@@ -87,13 +85,16 @@ const Footer = () => {
                 { to: "/contact", text: "Contact Us" },
                 { to: "/privacy", text: "Privacy Policy" },
               ].map((link) => (
-                <motion.li 
+                <motion.li
                   key={link.to}
                   className="mb-2"
                   whileHover={{ x: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <a href={link.to} className="text-muted text-decoration-none hover-text-gold">
+                  <a
+                    href={link.to}
+                    className="text-muted text-decoration-none hover-text-gold"
+                  >
                     {link.text}
                   </a>
                 </motion.li>
@@ -102,21 +103,31 @@ const Footer = () => {
           </motion.div>
 
           {/* Social & Contact */}
-          <motion.div 
-            className="col-lg-4 col-md-12"
-            variants={sectionVariants}
-          >
+          <motion.div className="col-lg-4 col-md-12" variants={sectionVariants}>
             <h5 className="mb-3">Connect With Us</h5>
             <ul className="list-unstyled d-flex flex-wrap gap-3 mb-4">
               {[
                 { icon: FaGithub, url: "https://github.com/jjingofarouk" },
-                { icon: FaInstagram, url: "https://instagram.com/frankshoeworld" },
+                {
+                  icon: FaInstagram,
+                  url: "https://instagram.com/frankshoeworld",
+                },
                 { icon: FaWhatsapp, url: "https://wa.me/256123456789" },
                 { icon: FaYoutube, url: "https://youtube.com/@frankshoeworld" },
                 { icon: FaSkype, url: "skype:frankshoeworld?call" },
               ].map((social, index) => (
-                <motion.li key={index} variants={iconVariants} whileHover="hover" whileTap="tap">
-                  <a href={social.url} target="_blank" rel="noreferrer" className="text-white">
+                <motion.li
+                  key={index}
+                  variants={iconVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                >
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-white"
+                  >
                     <social.icon size={24} />
                   </a>
                 </motion.li>
@@ -124,14 +135,17 @@ const Footer = () => {
             </ul>
             <div>
               <p className="text-muted small mb-1">
-                Email: <a href="mailto:info@frankshoeworld.com" className="text-gold">info@frankshoeworld.com</a>
+                Email:{" "}
+                <a href="mailto:info@frankshoeworld.com" className="text-gold">
+                  info@frankshoeworld.com
+                </a>
               </p>
               <p className="text-muted small">Phone: +256 123 456 789</p>
             </div>
           </motion.div>
 
           {/* Newsletter Signup */}
-          <motion.div 
+          <motion.div
             className="col-12 mt-4 text-center"
             variants={sectionVariants}
           >
@@ -139,8 +153,8 @@ const Footer = () => {
             <p className="text-muted small mb-3">
               Subscribe for exclusive offers and style updates.
             </p>
-            <form 
-              className="d-flex justify-content-center gap-2" 
+            <form
+              className="d-flex justify-content-center gap-2"
               style={{ maxWidth: "400px", margin: "0 auto" }}
               onSubmit={handleSubscribe}
             >
@@ -178,7 +192,7 @@ const Footer = () => {
         </div>
 
         {/* Back to Top */}
-        <motion.div 
+        <motion.div
           className="text-center mt-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -203,13 +217,17 @@ const Footer = () => {
           overflow: hidden;
         }
         .site-footer::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background: radial-gradient(circle at top left, rgba(212, 175, 55, 0.1), transparent 70%);
+          background: radial-gradient(
+            circle at top left,
+            rgba(212, 175, 55, 0.1),
+            transparent 70%
+          );
           pointer-events: none;
         }
         .text-gold {
