@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState, useEffect, Suspense, lazy, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -16,7 +16,7 @@ const Products = () => {
   const [filter, setFilter] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // Search functionality
-  const [sortOption, setSortOption] = useState("default"); // Dynamic sorting
+  const [sortOption, setSortOption] = useState("default"); // Sorting
   const [visibleProducts, setVisibleProducts] = useState(8); // Infinite scroll
   const [isStickyFilter, setIsStickyFilter] = useState(false);
   const dispatch = useDispatch();
@@ -25,17 +25,18 @@ const Products = () => {
   const { ref: filterRef, inView: filterInView } = useInView({ threshold: 0 });
   const { ref: loadMoreRef, inView: loadMoreInView } = useInView({ threshold: 0.5 });
 
-  useEffect(() => setIsStickyFilter(!filterInView), [filterInView]);
+  // Sticky filter logic - prevents unnecessary state updates
+  useEffect(() => {
+    setIsStickyFilter((prev) => (prev !== !filterInView ? !filterInView : prev));
+  }, [filterInView]);
 
-  // Fetch products with PWA offline support
+  // Fetch products with error handling and caching support
   useEffect(() => {
     let isMounted = true;
     const getProducts = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const response = await fetch("/products.json", {
-          headers: { "Cache-Control": "no-cache" },
-        });
+        const response = await fetch("/products.json", { headers: { "Cache-Control": "no-cache" } });
         if (!response.ok) throw new Error("Failed to fetch products");
         const products = await response.json();
         if (isMounted) {
@@ -62,12 +63,12 @@ const Products = () => {
     };
   }, []);
 
-  // Infinite scroll logic
+  // Infinite scroll logic - prevents unnecessary updates
   useEffect(() => {
     if (loadMoreInView && visibleProducts < filter.length) {
-      setVisibleProducts((prev) => prev + 8);
+      setVisibleProducts((prev) => (prev < filter.length ? prev + 8 : prev));
     }
-  }, [loadMoreInView, filter.length]);
+  }, [loadMoreInView, filter.length, visibleProducts]);
 
   // Search and filter logic
   const filterProduct = (cat) => {
@@ -104,10 +105,11 @@ const Products = () => {
     }
   };
 
-  const addProduct = (product) => {
+  // Prevent unnecessary re-renders for dispatch
+  const addProduct = useCallback((product) => {
     dispatch(addCart(product));
     toast.success("Added to Cart", { position: "top-right" });
-  };
+  }, [dispatch]);
 
   // Animation variants
   const containerVariants = {
@@ -201,30 +203,11 @@ const Products = () => {
 
   return (
     <section className="products-section container my-5 py-5 position-relative">
-      <motion.h2
-        className="display-4 text-center fw-light text-uppercase mb-4"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
+      <motion.h2 className="display-4 text-center fw-light text-uppercase mb-4">
         Latest Footwear
       </motion.h2>
       <hr className="w-25 mx-auto mb-5" style={{ borderColor: "#ddd" }} />
-      {loading ? (
-        <Suspense fallback={<div>Loading...</div>}>
-          <LoadingSkeleton />
-        </Suspense>
-      ) : (
-        <ShowProducts />
-      )}
-      <motion.div
-        className="position-absolute top-0 end-0 text-muted opacity-25"
-        initial={{ x: 50, opacity: 0 }}
-        animate={{ x: 0, opacity: 0.25 }}
-        transition={{ duration: 1, delay: 0.5 }}
-      >
-        Zano
-      </motion.div>
+      {loading ? <Suspense fallback={<LoadingSkeleton />}><LoadingSkeleton /></Suspense> : <ShowProducts />}
     </section>
   );
 };
