@@ -50,7 +50,7 @@ const Navbar = () => {
           whileTap={{ scale: 0.95 }}
         >
           <NavLink className="navbar-brand fw-bold fs-3" to="/">
-            <span className="text-gold">Frank</span> Shoe World
+            <span className="text-gold">Zano</span> !
           </NavLink>
         </motion.div>
 
