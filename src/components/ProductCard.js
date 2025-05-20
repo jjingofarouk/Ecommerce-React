@@ -1,14 +1,14 @@
+// src/components/ProductCard.js
 import React, { memo, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion"; // Animations
-import Tilt from "react-parallax-tilt"; // 3D tilt effect
-import { LazyLoadImage } from "react-lazy-load-image-component"; // Lazy-loaded images
-import "react-lazy-load-image-component/src/effects/blur.css"; // Blur effect for lazy load
+import { motion } from "framer-motion";
+import Tilt from "react-parallax-tilt";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const ProductCard = memo(({ product, onAddToCart }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Animation variants for card
   const cardVariants = {
     initial: { y: 20, opacity: 0 },
     animate: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
@@ -16,7 +16,6 @@ const ProductCard = memo(({ product, onAddToCart }) => {
     tap: { scale: 0.95 },
   };
 
-  // Button animation
   const buttonVariants = {
     hover: { scale: 1.1, backgroundColor: "#ffffff", color: "#000000" },
     tap: { scale: 0.9 },
@@ -35,7 +34,6 @@ const ProductCard = memo(({ product, onAddToCart }) => {
         onHoverEnd={() => setIsHovered(false)}
       >
         <div className="card h-100 text-center shadow-sm modern-card">
-          {/* Lazy-loaded image with blur effect */}
           <LazyLoadImage
             src={product.imageUrl}
             alt={product.name}
@@ -49,8 +47,6 @@ const ProductCard = memo(({ product, onAddToCart }) => {
               transform: isHovered ? "scale(1.1)" : "scale(1)",
             }}
           />
-
-          {/* Glassmorphism overlay on hover */}
           <motion.div
             className="card-overlay"
             initial={{ opacity: 0 }}
@@ -59,7 +55,6 @@ const ProductCard = memo(({ product, onAddToCart }) => {
           >
             <span className="quick-view">Quick View</span>
           </motion.div>
-
           <div className="card-body">
             <h5 className="card-title fw-light text-uppercase">
               {product.name.length > 12
@@ -72,13 +67,11 @@ const ProductCard = memo(({ product, onAddToCart }) => {
                 : product.description}
             </p>
           </div>
-
           <ul className="list-group list-group-flush">
             <li className="list-group-item lead fw-bold">
               {product.price.toLocaleString()} {product.currency}
             </li>
           </ul>
-
           <div className="card-body d-flex justify-content-center gap-2">
             <Link to={`/product/${product.id}`} className="modern-btn">
               <motion.button
@@ -106,7 +99,6 @@ const ProductCard = memo(({ product, onAddToCart }) => {
   );
 });
 
-// Add display name for better debugging
 ProductCard.displayName = "ProductCard";
 
 export default ProductCard;
