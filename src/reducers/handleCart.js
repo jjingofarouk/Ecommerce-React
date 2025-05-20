@@ -31,6 +31,7 @@ const handleCart = (state = getInitialState(), action) => {
       } else {
         return state;
       }
+      updatedCart = updatedCart.sort((a, b) => a.id - b.id);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return { ...state, cart: updatedCart, prevState: { ...state, prevState: null } };
 
@@ -43,6 +44,7 @@ const handleCart = (state = getInitialState(), action) => {
           x.id === action.payload.id ? { ...x, qty: x.qty - 1 } : x
         );
       }
+      updatedCart = updatedCart.sort((a, b) => a.id - b.id);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return { ...state, cart: updatedCart, prevState: { ...state, prevState: null } };
 
@@ -54,6 +56,7 @@ const handleCart = (state = getInitialState(), action) => {
             : x
         )
         .filter((x) => x.qty > 0);
+      updatedCart = updatedCart.sort((a, b) => a.id - b.id);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return { ...state, cart: updatedCart, prevState: { ...state, prevState: null } };
 
@@ -66,7 +69,10 @@ const handleCart = (state = getInitialState(), action) => {
       const existInCart = state.cart.find((x) => x.id === action.payload.id);
       if (existInCart) {
         updatedCart = state.cart.filter((x) => x.id !== action.payload.id);
-        updatedSavedItems = [...state.savedItems, { ...action.payload, qty: 1 }];
+        updatedSavedItems = [...state.savedItems, { ...action.payload, qty: 1 }].sort((a, b) =>
+          a.id - b.id
+        );
+        updatedCart = updatedCart.sort((a, b) => a.id - b.id);
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         localStorage.setItem("savedItems", JSON.stringify(updatedSavedItems));
         return {
@@ -85,8 +91,10 @@ const handleCart = (state = getInitialState(), action) => {
         (existInSaved.stockQuantity || Infinity) >
           state.cart.reduce((acc, item) => (item.id === action.payload.id ? acc + item.qty : acc), 0)
       ) {
-        updatedSavedItems = state.savedItems.filter((x) => x.id !== action.payload.id);
-        updatedCart = [...state.cart, { ...existInSaved, qty: 1 }];
+        updatedSavedItems = state.savedItems.filter((x) => x.id !== action.payload.id).sort((a, b) =>
+          a.id - b.id
+        );
+        updatedCart = [...state.cart, { ...existInSaved, qty: 1 }].sort((a, b) => a.id - b.id);
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         localStorage.setItem("savedItems", JSON.stringify(updatedSavedItems));
         return {
@@ -103,20 +111,23 @@ const handleCart = (state = getInitialState(), action) => {
       return { ...state, discount: action.payload, prevState: { ...state, prevState: null } };
 
     case "TOGGLEFAVORITE":
-      updatedCart = state.cart.map((x) =>
-        x.id === action.payload ? { ...x, isFavorite: !x.isFavorite } : x
-      );
+      updatedCart = state.cart
+        .map((x) => (x.id === action.payload ? { ...x, isFavorite: !x.isFavorite } : x))
+        .sort((a, b) => a.id - b.id);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       return { ...state, cart: updatedCart, prevState: { ...state, prevState: null } };
 
     case "SYNCCART":
-      localStorage.setItem("cart", JSON.stringify(action.payload));
-      return { ...state, cart: action.payload };
+      updatedCart = action.payload.sort((a, b) => a.id - b.id);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      return { ...state, cart: updatedCart };
 
     case "UNDO":
       if (state.prevState) {
-        localStorage.setItem("cart", JSON.stringify(state.prevState.cart));
-        localStorage.setItem("savedItems", JSON.stringify(state.prevState.savedItems));
+        updatedCart = state.prevState.cart.sort((a, b) => a.id - b.id);
+        updatedSavedItems = state.prevState.savedItems.sort((a, b) => a.id - b.id);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        localStorage.setItem("savedItems", JSON.stringify(updatedSavedItems));
         localStorage.setItem("discount", state.prevState.discount);
         return { ...state.prevState, prevState: null };
       }
