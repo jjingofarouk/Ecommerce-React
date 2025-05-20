@@ -1,10 +1,10 @@
 // scripts/uploadProducts.js
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, doc, setDoc } = require('firebase/firestore');
+const { getFirestore, collection, doc, writeBatch } = require('firebase/firestore');
 require('dotenv').config();
 
-// Load your JSON data
-const products = require('./products.json'); // Path to your JSON file
+// Load JSON data
+const products = require('./products.json'); // Adjust path if needed
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -21,13 +21,19 @@ const db = getFirestore(app);
 
 async function uploadProducts() {
   try {
+    const batch = writeBatch(db);
     for (const product of products) {
-      await setDoc(doc(collection(db, 'products'), product.id.toString()), product);
-      console.log(`Uploaded: ${product.name}`);
+      if (!product.id || !product.name || !product.price) {
+        console.warn(`Skipping invalid product: ID ${product.id || 'unknown'}`);
+        continue;
+      }
+      const docRef = doc(collection(db, 'products'), product.id.toString());
+      batch.set(docRef, product);
     }
-    console.log('All products uploaded successfully');
+    await batch.commit();
+    console.log(`Successfully uploaded ${products.length} products`);
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error uploading products:', error);
   }
 }
 
