@@ -1,7 +1,9 @@
+// src/pages/Checkout.js
 import React from "react";
 import { Footer, Navbar } from "../components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 const Checkout = () => {
   const state = useSelector((state) => state.handleCart);
 
@@ -22,15 +24,15 @@ const Checkout = () => {
 
   const ShowCheckout = () => {
     let subtotal = 0;
-    let shipping = 30.0;
+    let shipping = 30000; // Adjusted to UGX
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
+    state.cart.forEach((item) => {
+      subtotal += item.price * item.qty;
+      totalItems += item.qty;
     });
+    const discount = state.discount || 0;
+    const discountedSubtotal = subtotal * (1 - discount);
 
-    state.map((item) => {
-      return (totalItems += item.qty);
-    });
     return (
       <>
         <div className="container py-5">
@@ -44,18 +46,24 @@ const Checkout = () => {
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                       Products ({totalItems})
-                      <span>${Math.round(subtotal)}</span>
+                      <span>{Math.round(subtotal)} {state.cart[0]?.currency || "UGX"}</span>
                     </li>
+                    {discount > 0 && (
+                      <li className="list-group-item d-flex justify-content-between align-items-center px-0">
+                        Discount
+                        <span>-{Math.round(subtotal * discount)} {state.cart[0]?.currency || "UGX"}</span>
+                      </li>
+                    )}
                     <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                       Shipping
-                      <span>${shipping}</span>
+                      <span>{shipping} {state.cart[0]?.currency || "UGX"}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                       <div>
                         <strong>Total amount</strong>
                       </div>
                       <span>
-                        <strong>${Math.round(subtotal + shipping)}</strong>
+                        <strong>{Math.round(discountedSubtotal + shipping)} {state.cart[0]?.currency || "UGX"}</strong>
                       </span>
                     </li>
                   </ul>
@@ -68,10 +76,10 @@ const Checkout = () => {
                   <h4 className="mb-0">Billing address</h4>
                 </div>
                 <div className="card-body">
-                  <form className="needs-validation" novalidate>
+                  <form className="needs-validation" noValidate>
                     <div className="row g-3">
                       <div className="col-sm-6 my-1">
-                        <label for="firstName" className="form-label">
+                        <label htmlFor="firstName" className="form-label">
                           First name
                         </label>
                         <input
@@ -87,7 +95,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-sm-6 my-1">
-                        <label for="lastName" className="form-label">
+                        <label htmlFor="lastName" className="form-label">
                           Last name
                         </label>
                         <input
@@ -103,7 +111,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-12 my-1">
-                        <label for="email" className="form-label">
+                        <label htmlFor="email" className="form-label">
                           Email
                         </label>
                         <input
@@ -114,13 +122,12 @@ const Checkout = () => {
                           required
                         />
                         <div className="invalid-feedback">
-                          Please enter a valid email address for shipping
-                          updates.
+                          Please enter a valid email address for shipping updates.
                         </div>
                       </div>
 
                       <div className="col-12 my-1">
-                        <label for="address" className="form-label">
+                        <label htmlFor="address" className="form-label">
                           Address
                         </label>
                         <input
@@ -136,9 +143,8 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-12">
-                        <label for="address2" className="form-label">
-                          Address 2{" "}
-                          <span className="text-muted">(Optional)</span>
+                        <label htmlFor="address2" className="form-label">
+                          Address 2 <span className="text-muted">(Optional)</span>
                         </label>
                         <input
                           type="text"
@@ -149,13 +155,12 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-5 my-1">
-                        <label for="country" className="form-label">
+                        <label htmlFor="country" className="form-label">
                           Country
                         </label>
-                        <br />
                         <select className="form-select" id="country" required>
                           <option value="">Choose...</option>
-                          <option>India</option>
+                          <option>Uganda</option>
                         </select>
                         <div className="invalid-feedback">
                           Please select a valid country.
@@ -163,21 +168,20 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-4 my-1">
-                        <label for="state" className="form-label">
-                          State
+                        <label htmlFor="district" className="form-label">
+                          District
                         </label>
-                        <br />
-                        <select className="form-select" id="state" required>
+                        <select className="form-select" id="district" required>
                           <option value="">Choose...</option>
-                          <option>Punjab</option>
+                          <option>Kampala</option>
                         </select>
                         <div className="invalid-feedback">
-                          Please provide a valid state.
+                          Please provide a valid district.
                         </div>
                       </div>
 
                       <div className="col-md-3 my-1">
-                        <label for="zip" className="form-label">
+                        <label htmlFor="zip" className="form-label">
                           Zip
                         </label>
                         <input
@@ -199,7 +203,7 @@ const Checkout = () => {
 
                     <div className="row gy-3">
                       <div className="col-md-6">
-                        <label for="cc-name" className="form-label">
+                        <label htmlFor="cc-name" className="form-label">
                           Name on card
                         </label>
                         <input
@@ -218,7 +222,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-6">
-                        <label for="cc-number" className="form-label">
+                        <label htmlFor="cc-number" className="form-label">
                           Credit card number
                         </label>
                         <input
@@ -234,7 +238,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-3">
-                        <label for="cc-expiration" className="form-label">
+                        <label htmlFor="cc-expiration" className="form-label">
                           Expiration
                         </label>
                         <input
@@ -250,7 +254,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-3">
-                        <label for="cc-cvv" className="form-label">
+                        <label htmlFor="cc-cvv" className="form-label">
                           CVV
                         </label>
                         <input
@@ -269,7 +273,7 @@ const Checkout = () => {
                     <hr className="my-4" />
 
                     <button
-                      className="w-100 btn btn-primary "
+                      className="w-100 btn btn-primary"
                       type="submit"
                       disabled
                     >
@@ -284,13 +288,14 @@ const Checkout = () => {
       </>
     );
   };
+
   return (
     <>
       <Navbar />
       <div className="container my-3 py-3">
         <h1 className="text-center">Checkout</h1>
         <hr />
-        {state.length ? <ShowCheckout /> : <EmptyCart />}
+        {state.cart.length ? <ShowCheckout /> : <EmptyCart />}
       </div>
       <Footer />
     </>
