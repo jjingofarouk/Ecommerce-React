@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+// src/components/Navbar.js
+import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaSignInAlt, FaUserPlus, FaShoppingCart, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion'; // Added for animations
+import { FaSignInAlt, FaUserPlus, FaShoppingCart, FaSearch, FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AuthContext } from '../AuthContext';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
-  const cart = useSelector((state) => state.handleCart);
+  const cart = useSelector((state) => state.handleCart.cart);
+  const { currentUser } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -16,7 +22,15 @@ const Navbar = () => {
     }
   };
 
-  // Animation variants
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      toast.success('Signed out successfully');
+    } catch (error) {
+      toast.error('Sign out failed');
+    }
+  };
+
   const menuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { 
@@ -44,7 +58,6 @@ const Navbar = () => {
       transition={{ type: 'spring', stiffness: 120 }}
     >
       <div className="container d-flex align-items-center justify-content-between">
-        {/* Animated Brand Logo */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -54,7 +67,6 @@ const Navbar = () => {
           </NavLink>
         </motion.div>
 
-        {/* Mobile Menu Toggle */}
         <motion.button
           className="navbar-toggler border-0"
           whileTap={{ scale: 0.9 }}
@@ -84,7 +96,6 @@ const Navbar = () => {
           </AnimatePresence>
         </motion.button>
 
-        {/* Navbar Content */}
         <AnimatePresence>
           <motion.div 
             className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}
@@ -93,7 +104,6 @@ const Navbar = () => {
             animate="visible"
             exit="hidden"
           >
-            {/* Navigation Links */}
             <ul className="navbar-nav mx-auto my-2 text-center align-items-lg-center">
               {['/', '/products', '/about', '/contact'].map((path, index) => (
                 <motion.li 
@@ -114,12 +124,10 @@ const Navbar = () => {
               ))}
             </ul>
 
-            {/* Right Section */}
             <motion.div 
               className="d-flex flex-column flex-lg-row align-items-center gap-3"
               variants={itemVariants}
             >
-              {/* Animated Search Bar */}
               <form onSubmit={handleSearch} className="d-flex align-items-center">
                 <motion.input
                   type="text"
@@ -139,43 +147,80 @@ const Navbar = () => {
                 </motion.button>
               </form>
 
-              {/* Auth & Cart Buttons */}
               <div className="buttons d-flex gap-2">
-                {[
-                  { to: '/login', icon: FaSignInAlt, text: 'Login' },
-                  { to: '/register', icon: FaUserPlus, text: 'Register' },
-                  { to: '/cart', icon: FaShoppingCart, text: 'Cart', hasBadge: true }
-                ].map((btn, index) => (
-                  <motion.div
-                    key={btn.to}
-                    whileHover={{ y: -3 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <NavLink 
-                      to={btn.to} 
-                      className={`btn ${btn.hasBadge ? 'btn-gold' : 'btn-outline-light'} rounded-0 px-3 position-relative`}
+                {currentUser ? (
+                  <>
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <btn.icon className="me-1" /> {btn.text}
-                      {btn.hasBadge && cart.length > 0 && (
-                        <motion.span
-                          className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: 'spring', stiffness: 500 }}
+                      <button 
+                        className="btn btn-outline-light rounded-0 px-3"
+                        onClick={handleSignOut}
+                      >
+                        <FaSignOutAlt className="me-1" /> Sign Out
+                      </button>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <NavLink 
+                        to="/cart" 
+                        className="btn btn-gold rounded-0 px-3 position-relative"
+                      >
+                        <FaShoppingCart className="me-1" /> Cart
+                        {cart.length > 0 && (
+                          <motion.span
+                            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: 'spring', stiffness: 500 }}
+                          >
+                            {cart.length}
+                          </motion.span>
+                        )}
+                      </NavLink>
+                    </motion.div>
+                  </>
+                ) : (
+                  <>
+                    {[
+                      { to: '/login', icon: FaSignInAlt, text: 'Login' },
+                      { to: '/register', icon: FaUserPlus, text: 'Register' },
+                      { to: '/cart', icon: FaShoppingCart, text: 'Cart', hasBadge: true }
+                    ].map((btn) => (
+                      <motion.div
+                        key={btn.to}
+                        whileHover={{ y: -3 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <NavLink 
+                          to={btn.to} 
+                          className={`btn ${btn.hasBadge ? 'btn-gold' : 'btn-outline-light'} rounded-0 px-3 position-relative`}
                         >
-                          {cart.length}
-                        </motion.span>
-                      )}
-                    </NavLink>
-                  </motion.div>
-                ))}
+                          <btn.icon className="me-1" /> {btn.text}
+                          {btn.hasBadge && cart.length > 0 && (
+                            <motion.span
+                              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ type: 'spring', stiffness: 500 }}
+                            >
+                              {cart.length}
+                            </motion.span>
+                          )}
+                        </NavLink>
+                      </motion.div>
+                    ))}
+                  </>
+                )}
               </div>
             </motion.div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Enhanced Styles */}
       <style jsx>{`
         .navbar {
           transition: all 0.3s ease;
