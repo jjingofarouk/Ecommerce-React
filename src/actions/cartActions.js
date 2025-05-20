@@ -5,7 +5,7 @@ import { auth, db } from "../firebase";
 export const addCart = (product) => {
   return async (dispatch) => {
     dispatch({ type: "ADDITEM", payload: product });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
@@ -13,7 +13,7 @@ export const addCart = (product) => {
 export const delCart = (product) => {
   return async (dispatch) => {
     dispatch({ type: "DELITEM", payload: product });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
@@ -21,7 +21,7 @@ export const delCart = (product) => {
 export const updateCartQuantity = (productId, qty) => {
   return async (dispatch) => {
     dispatch({ type: "UPDATEQTY", payload: { id: productId, qty } });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
@@ -37,7 +37,7 @@ export const clearCart = () => {
 export const saveForLater = (product) => {
   return async (dispatch) => {
     dispatch({ type: "SAVEFORLATER", payload: product });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
@@ -45,7 +45,7 @@ export const saveForLater = (product) => {
 export const addBackToCart = (product) => {
   return async (dispatch) => {
     dispatch({ type: "ADDBACKTOCART", payload: product });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
@@ -63,7 +63,7 @@ export const applyDiscount = (discountPercentage) => {
 export const toggleFavorite = (productId) => {
   return async (dispatch) => {
     dispatch({ type: "TOGGLEFAVORITE", payload: productId });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
@@ -105,13 +105,15 @@ export const fetchCart = () => {
             mergedCart.push(localItem);
           }
         });
-        await setDoc(doc(db, "carts", user.uid), { cart: mergedCart });
-        localStorage.setItem("cart", JSON.stringify(mergedCart));
-        dispatch({ type: "SYNCCART", payload: mergedCart });
+        const sortedCart = mergedCart.sort((a, b) => a.id - b.id);
+        await setDoc(doc(db, "carts", user.uid), { cart: sortedCart });
+        localStorage.setItem("cart", JSON.stringify(sortedCart));
+        dispatch({ type: "SYNCCART", payload: sortedCart });
       } else {
         const storedCart = localStorage.getItem("cart");
         if (storedCart) {
-          dispatch({ type: "SYNCCART", payload: JSON.parse(storedCart) });
+          const sortedCart = JSON.parse(storedCart).sort((a, b) => a.id - b.id);
+          dispatch({ type: "SYNCCART", payload: sortedCart });
         }
       }
     } catch (error) {
@@ -123,7 +125,7 @@ export const fetchCart = () => {
 export const undoCart = () => {
   return async (dispatch) => {
     dispatch({ type: "UNDO" });
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").sort((a, b) => a.id - b.id);
     dispatch(syncCart(updatedCart));
   };
 };
