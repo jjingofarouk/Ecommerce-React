@@ -24,7 +24,7 @@ const Checkout = () => {
 
   const ShowCheckout = () => {
     let subtotal = 0;
-    let shipping = 30000; // Adjusted to UGX
+    let shipping = 30000;
     let totalItems = 0;
     state.cart.forEach((item) => {
       subtotal += item.price * item.qty;
@@ -93,7 +93,6 @@ const Checkout = () => {
                           Valid first name is required.
                         </div>
                       </div>
-
                       <div className="col-sm-6 my-1">
                         <label htmlFor="lastName" className="form-label">
                           Last name
@@ -109,7 +108,6 @@ const Checkout = () => {
                           Valid last name is required.
                         </div>
                       </div>
-
                       <div className="col-12 my-1">
                         <label htmlFor="email" className="form-label">
                           Email
@@ -125,7 +123,6 @@ const Checkout = () => {
                           Please enter a valid email address for shipping updates.
                         </div>
                       </div>
-
                       <div className="col-12 my-1">
                         <label htmlFor="address" className="form-label">
                           Address
@@ -141,7 +138,6 @@ const Checkout = () => {
                           Please enter your shipping address.
                         </div>
                       </div>
-
                       <div className="col-12">
                         <label htmlFor="address2" className="form-label">
                           Address 2 <span className="text-muted">(Optional)</span>
@@ -153,7 +149,6 @@ const Checkout = () => {
                           placeholder="Apartment or suite"
                         />
                       </div>
-
                       <div className="col-md-5 my-1">
                         <label htmlFor="country" className="form-label">
                           Country
@@ -166,7 +161,6 @@ const Checkout = () => {
                           Please select a valid country.
                         </div>
                       </div>
-
                       <div className="col-md-4 my-1">
                         <label htmlFor="district" className="form-label">
                           District
@@ -179,7 +173,6 @@ const Checkout = () => {
                           Please provide a valid district.
                         </div>
                       </div>
-
                       <div className="col-md-3 my-1">
                         <label htmlFor="zip" className="form-label">
                           Zip
@@ -196,11 +189,8 @@ const Checkout = () => {
                         </div>
                       </div>
                     </div>
-
                     <hr className="my-4" />
-
                     <h4 className="mb-3">Payment</h4>
-
                     <div className="row gy-3">
                       <div className="col-md-6">
                         <label htmlFor="cc-name" className="form-label">
@@ -220,7 +210,6 @@ const Checkout = () => {
                           Name on card is required
                         </div>
                       </div>
-
                       <div className="col-md-6">
                         <label htmlFor="cc-number" className="form-label">
                           Credit card number
@@ -236,7 +225,6 @@ const Checkout = () => {
                           Credit card number is required
                         </div>
                       </div>
-
                       <div className="col-md-3">
                         <label htmlFor="cc-expiration" className="form-label">
                           Expiration
@@ -252,7 +240,6 @@ const Checkout = () => {
                           Expiration date required
                         </div>
                       </div>
-
                       <div className="col-md-3">
                         <label htmlFor="cc-cvv" className="form-label">
                           CVV
@@ -269,9 +256,7 @@ const Checkout = () => {
                         </div>
                       </div>
                     </div>
-
                     <hr className="my-4" />
-
                     <button
                       className="w-100 btn btn-primary"
                       type="submit"
