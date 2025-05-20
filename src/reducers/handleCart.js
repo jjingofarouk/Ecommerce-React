@@ -1,4 +1,4 @@
-// src/reducers/handleCart.js
+// src/reducer/handleCart.js
 const getInitialState = () => {
   const storedCart = localStorage.getItem("cart");
   const storedSavedItems = localStorage.getItem("savedItems");
