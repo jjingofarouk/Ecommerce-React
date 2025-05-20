@@ -118,7 +118,7 @@ const Cart = () => {
                                 src={item.imageUrl}
                                 alt={item.name}
                                 className="img-fluid"
-                                style={{ objectFit: "contain" }}
+                                style={{ objectFit: "contain", width: "100%" }}
                               />
                             </div>
                           </div>
