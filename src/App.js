@@ -1,24 +1,46 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./redux/store";
 import { AuthProvider } from "./AuthContext";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Home from "./components/Home";
+import {
+  Home,
+  Product,
+  ProductsPage,
+  AboutPage,
+  ContactPage,
+  Cart,
+  Login,
+  Register,
+  Checkout,
+  PageNotFound,
+} from "./pages";
+import ScrollToTop from "./components/ScrollToTop";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
     <Provider store={store}>
       <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </Router>
+        <BrowserRouter>
+          <ScrollToTop>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/product/:id" element={<Product />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="*" element={<PageNotFound />} />
+              <Route path="/product/*" element={<PageNotFound />} />
+            </Routes>
+          </ScrollToTop>
+          <Toaster />
+        </BrowserRouter>
       </AuthProvider>
     </Provider>
   );
