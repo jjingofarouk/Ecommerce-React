@@ -95,15 +95,25 @@ const Product = () => {
           </h4>
           <h1 className="display-5">{product.name}</h1>
           <p className="lead">
-            {product.averageRating} <i className="fa fa-star"></i>
+            {product.averageRating} <i className="fa fa-star"></i> ({product.reviewsCount} reviews)
           </p>
           <h3 className="display-6 my-4">
             {product.price.toLocaleString()} {product.currency}
           </h3>
           <p className="lead">{product.description}</p>
+          <p className="text-muted">
+            Stock: {product.stockStatus === "in-stock" ? "In Stock" : "Low Stock"}
+          </p>
+          <p className="text-muted">
+            Sizes: {product.specifications.sizes.join(", ")}
+          </p>
+          <p className="text-muted">
+            Colors: {product.specifications.colors.join(", ")}
+          </p>
           <button
             className="btn btn-outline-dark"
             onClick={() => addProduct(product)}
+            disabled={product.stockStatus === "out-of-stock"}
           >
             Add to Cart
           </button>
@@ -141,6 +151,9 @@ const Product = () => {
             />
             <div className="card-body">
               <h5 className="card-title">{item.name.substring(0, 15)}...</h5>
+              <p className="text-muted small">
+                {item.stockStatus === "in-stock" ? "In Stock" : "Low Stock"}
+              </p>
             </div>
             <div className="card-body">
               <Link to={`/product/${item.id}`} className="btn btn-dark m-1">
@@ -149,6 +162,7 @@ const Product = () => {
               <button
                 className="btn btn-dark m-1"
                 onClick={() => addProduct(item)}
+                disabled={item.stockStatus === "out-of-stock"}
               >
                 Add to Cart
               </button>
