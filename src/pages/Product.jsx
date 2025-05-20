@@ -27,7 +27,6 @@ const Product = () => {
       setLoading(true);
       setLoading2(true);
       try {
-        // Fetch the specific product
         const productDoc = await getDoc(doc(db, "products", id));
         if (productDoc.exists()) {
           setProduct({ id: productDoc.id, ...productDoc.data() });
@@ -36,7 +35,6 @@ const Product = () => {
         }
         setLoading(false);
 
-        // Fetch similar products
         const querySnapshot = await getDocs(collection(db, "products"));
         const products = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -85,8 +83,11 @@ const Product = () => {
             className="img-fluid"
             src={product.imageUrl}
             alt={product.name}
-            width="400px"
-            height="400px"
+            style={{
+              objectFit: "contain",
+              maxHeight: "400px",
+              width: "100%",
+            }}
           />
         </div>
         <div className="col-md-6 col-md-6 py-5">
@@ -146,8 +147,11 @@ const Product = () => {
               className="card-img-top p-3"
               src={item.imageUrl}
               alt={item.name}
-              height={300}
-              width={300}
+              style={{
+                objectFit: "contain",
+                maxHeight: "300px",
+                width: "100%",
+              }}
             />
             <div className="card-body">
               <h5 className="card-title">{item.name.substring(0, 15)}...</h5>
