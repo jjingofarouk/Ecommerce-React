@@ -1,3 +1,4 @@
+// src/pages/Product.js
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Link, useParams } from "react-router-dom";
@@ -5,6 +6,8 @@ import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 import { Footer, Navbar } from "../components";
+import { db } from "../firebase";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 
 const Product = () => {
   const { id } = useParams();
@@ -23,21 +26,34 @@ const Product = () => {
     const getProduct = async () => {
       setLoading(true);
       setLoading2(true);
-      const response = await fetch("/products.json");
-      const data = await response.json();
-      const products = data.products;
+      try {
+        // Fetch the specific product
+        const productDoc = await getDoc(doc(db, "products", id));
+        if (productDoc.exists()) {
+          setProduct({ id: productDoc.id, ...productDoc.data() });
+        } else {
+          console.error("Product not found");
+        }
+        setLoading(false);
 
-      const selectedProduct = products.find((p) => p.id === parseInt(id));
-      setProduct(selectedProduct);
-      setLoading(false);
-
-      const related = products.filter(
-        (p) =>
-          p.category.some((cat) => selectedProduct.category.includes(cat)) &&
-          p.id !== selectedProduct.id
-      );
-      setSimilarProducts(related);
-      setLoading2(false);
+        // Fetch similar products
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const products = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const related = products.filter(
+          (p) =>
+            p.category.some((cat) => productDoc.data().category.includes(cat)) &&
+            p.id !== id
+        );
+        setSimilarProducts(related);
+        setLoading2(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+        setLoading2(false);
+      }
     };
     getProduct();
   }, [id]);
@@ -127,7 +143,7 @@ const Product = () => {
               <h5 className="card-title">{item.name.substring(0, 15)}...</h5>
             </div>
             <div className="card-body">
-              <Link to={`/product/UGX{item.id}`} className="btn btn-dark m-1">
+              <Link to={`/product/${item.id}`} className="btn btn-dark m-1">
                 Buy Now
               </Link>
               <button
