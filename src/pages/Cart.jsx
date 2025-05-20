@@ -1,3 +1,4 @@
+// src/pages/Cart.js
 import React, { useState } from "react";
 import { Footer, Navbar } from "../components";
 import { useSelector, useDispatch } from "react-redux";
@@ -108,31 +109,29 @@ const Cart = () => {
                             <div
                               style={{
                                 width: "100%",
-                                maxWidth: "120px", // Slightly larger but constrained
+                                maxWidth: "120px",
                                 height: "auto",
                                 overflow: "hidden",
                               }}
                             >
                               <img
-                                src={item.imageUrl} // Ensure absolute path
-                                alt={item.title}
-                                className="img-fluid" // Bootstrap class for responsiveness
-                                style={{ objectFit: "contain" }} // Maintains aspect ratio
+                                src={item.imageUrl}
+                                alt={item.name}
+                                className="img-fluid"
+                                style={{ objectFit: "contain" }}
                               />
                             </div>
                           </div>
                           <div className="col-lg-5 col-md-6">
                             <p>
-                              <strong>{item.title}</strong>
+                              <strong>{item.name}</strong>
                               {item.isFavorite && (
                                 <i className="fas fa-heart text-danger mx-2"></i>
                               )}
                             </p>
                             <small>
                               {item.stockQuantity
-                                ? `${
-                                    item.stockQuantity - item.qty
-                                  } left in stock`
+                                ? `${item.stockQuantity - item.qty} left in stock`
                                 : "Stock unlimited"}
                             </small>
                           </div>
@@ -171,7 +170,7 @@ const Cart = () => {
                             <p className="text-start text-md-center">
                               <strong>
                                 <span className="text-muted">{item.qty}</span> x{" "}
-                                {item.price} UGX
+                                {item.price} {item.currency}
                               </strong>
                             </p>
                             <button
@@ -204,7 +203,7 @@ const Cart = () => {
                           key={item.id}
                           className="d-flex justify-content-between align-items-center"
                         >
-                          <p>{item.title}</p>
+                          <p>{item.name}</p>
                           <button
                             className="btn btn-outline-dark"
                             onClick={() => addBack(item)}
@@ -239,12 +238,12 @@ const Cart = () => {
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                         Products ({totalItems})
-                        <span>{Math.round(subtotal)} UGX</span>
+                        <span>{Math.round(subtotal)} {state.cart[0]?.currency || "UGX"}</span>
                       </li>
                       {discount > 0 && (
                         <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                           Discount
-                          <span>-{Math.round(subtotal * discount)} UGX</span>
+                          <span>-{Math.round(subtotal * discount)} {state.cart[0]?.currency || "UGX"}</span>
                         </li>
                       )}
                       <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
@@ -252,7 +251,7 @@ const Cart = () => {
                           <strong>Total amount</strong>
                         </div>
                         <span>
-                          <strong>{Math.round(discountedSubtotal)} UGX</strong>
+                          <strong>{Math.round(discountedSubtotal)} {state.cart[0]?.currency || "UGX"}</strong>
                         </span>
                       </li>
                     </ul>
