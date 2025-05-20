@@ -130,8 +130,8 @@ const Cart = () => {
                               )}
                             </p>
                             <small>
-                              {item.stockQuantity
-                                ? `${item.stockQuantity - item.qty} left in stock`
+                              {item.stockStatus
+                                ? `${item.stockStatus === "in-stock" ? "In Stock" : "Low Stock"}`
                                 : "Stock unlimited"}
                             </small>
                           </div>
@@ -154,15 +154,12 @@ const Cart = () => {
                                   updateQty(item.id, e.target.value)
                                 }
                                 min="0"
-                                max={item.stockQuantity || undefined}
                                 style={{ width: "60px" }}
                               />
                               <button
                                 className="btn px-3"
                                 onClick={() => addItem(item)}
-                                disabled={
-                                  item.qty >= (item.stockQuantity || Infinity)
-                                }
+                                disabled={item.stockStatus === "out-of-stock"}
                               >
                                 <i className="fas fa-plus"></i>
                               </button>
