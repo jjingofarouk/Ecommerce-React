@@ -1,8 +1,10 @@
+// src/pages/Register.js
 import React, { useState } from "react";
 import { Footer, Navbar } from "../components";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase"; // Import the auth object from firebase.js
+import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -15,9 +17,11 @@ const Register = () => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/login"); // Redirect to login page after successful registration
+      toast.success('Registered successfully');
+      navigate("/login");
     } catch (error) {
-      setError(error.message); // Display error if registration fails
+      setError(error.message);
+      toast.error('Registration failed');
     }
   };
 
