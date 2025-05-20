@@ -123,6 +123,9 @@ const Products = () => {
                 <p className="card-text">
                   {product.description.substring(0, 90)}...
                 </p>
+                <p className="text-muted small">
+                  {product.stockStatus === "in-stock" ? "In Stock" : "Low Stock"}
+                </p>
               </div>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item lead">
@@ -139,6 +142,7 @@ const Products = () => {
                 <button
                   className="btn btn-dark m-1"
                   onClick={() => addProduct(product)}
+                  disabled={product.stockStatus === "out-of-stock"}
                 >
                   Add to Cart
                 </button>
