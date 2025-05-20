@@ -1,3 +1,4 @@
+// src/components/Products.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
@@ -5,6 +6,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 const Products = () => {
   const [data, setData] = useState([]);
@@ -22,11 +25,19 @@ const Products = () => {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("/products.json"); // Fetch from public folder
-      if (componentMounted) {
-        const products = await response.json();
-        setData(products.products); // Access the "products" array
-        setFilter(products.products);
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const products = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        if (componentMounted) {
+          setData(products);
+          setFilter(products);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
         setLoading(false);
       }
       return () => {
