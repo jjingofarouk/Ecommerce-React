@@ -66,6 +66,9 @@ const ProductCard = memo(({ product, onAddToCart }) => {
                 ? `${product.description.substring(0, 90)}...`
                 : product.description}
             </p>
+            <p className="text-muted small">
+              {product.stockStatus === "in-stock" ? "In Stock" : "Low Stock"}
+            </p>
           </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item lead fw-bold">
@@ -89,6 +92,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
               whileTap="tap"
               className="btn btn-dark m-1"
               onClick={() => onAddToCart(product)}
+              disabled={product.stockStatus === "out-of-stock"}
             >
               Add to Cart
             </motion.button>
