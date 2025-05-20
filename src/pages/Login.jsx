@@ -1,8 +1,10 @@
+// src/pages/Login.js
 import React, { useState } from "react";
 import { Footer, Navbar } from "../components";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase"; // Import the auth object from firebase.js
+import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,9 +16,11 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/"); // Redirect to home page after successful login
+      toast.success('Logged in successfully');
+      navigate("/");
     } catch (error) {
-      setError(error.message); // Display error if login fails
+      setError(error.message);
+      toast.error('Login failed');
     }
   };
 
