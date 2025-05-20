@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import { AuthProvider } from "./AuthContext";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import Home from "./components/Home";
 
 const App = () => {
