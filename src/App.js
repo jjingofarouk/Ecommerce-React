@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -16,6 +15,7 @@ import {
   Checkout,
   PageNotFound,
 } from "./pages";
+import Footer from "./components/Footer"; // Import your Footer component
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 
@@ -39,6 +39,7 @@ const App = () => {
               <Route path="/product/*" element={<PageNotFound />} />
             </Routes>
           </ScrollToTop>
+          <Footer /> {/* Footer placed here to appear on all pages */}
           <Toaster />
         </BrowserRouter>
       </AuthProvider>
