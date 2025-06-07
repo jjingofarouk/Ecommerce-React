@@ -1,4 +1,3 @@
-// src/components/Products.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
@@ -17,6 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Pagination from '@mui/material/Pagination';
 import { 
   Collections as CollectionsIcon,
   FlashOn as FlashOnIcon,
@@ -67,6 +67,8 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
   const [hoveredProduct, setHoveredProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(6); // Number of products per page
   let componentMounted = true;
 
   const dispatch = useDispatch();
@@ -142,12 +144,24 @@ const Products = () => {
 
   const filterProduct = (cat) => {
     setActiveCategory(cat);
+    setCurrentPage(1); // Reset to first page when filtering
     if (cat === "all") {
       setFilter(data);
     } else {
       const updatedList = data.filter((item) => item.category.includes(cat));
       setFilter(updatedList);
     }
+  };
+
+  // Calculate pagination
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filter.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(filter.length / productsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
   };
 
   const ShowProducts = () => {
@@ -205,7 +219,7 @@ const Products = () => {
 
         {/* Products Grid */}
         <Grid container spacing={4}>
-          {filter.map((product, index) => (
+          {currentProducts.map((product, index) => (
             <Grid 
               item 
               xs={12} 
@@ -319,7 +333,7 @@ const Products = () => {
                   <Button
                     variant="outlined"
                     onClick={() => addProduct(product)}
-                    disabled={product.stockStatus === "out-of-stock"}
+                    disabled={product.stockStatus === "out-ofstock"}
                     sx={{
                       bgcolor: product.stockStatus === "out-of-stock" ? '#e9ecef' : '#fff',
                       color: product.stockStatus === "out-of-stock" ? '#6c757d' : '#000',
@@ -342,6 +356,31 @@ const Products = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  '&.Mui-selected': {
+                    backgroundColor: '#000',
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#333',
+                    },
+                  },
+                },
+              }}
+            />
+          </Box>
+        )}
 
         <style jsx>{`
           @keyframes fadeInUp {
