@@ -15,6 +15,7 @@ import {
   Checkout,
   PageNotFound,
 } from "./pages";
+import Navbar from "./components/Navbar"; // Import your Navbar component
 import Footer from "./components/Footer"; // Import your Footer component
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -24,6 +25,7 @@ const App = () => {
     <Provider store={store}>
       <AuthProvider>
         <BrowserRouter>
+          <Navbar /> {/* Navbar placed here to appear on all pages */}
           <ScrollToTop>
             <Routes>
               <Route path="/" element={<Home />} />
