@@ -142,7 +142,6 @@ const ContactPage = () => {
 
   return (
     <>
-      <Navbar />
       <ContactContainer>
         <motion.div
           variants={containerVariants}
@@ -185,7 +184,9 @@ const ContactPage = () => {
           </FormContainer>
         </motion.div>
       </ContactContainer>
-      <Footer />
+
+      
+      
     </>
   );
 };
