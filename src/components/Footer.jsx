@@ -7,7 +7,8 @@ import {
   FaSkype,
   FaArrowUp,
 } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion"; // Added for animations
+import { motion, AnimatePresence } from "framer-motion";
+import "./Footer.css";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -17,12 +18,11 @@ const Footer = () => {
     e.preventDefault();
     if (email) {
       setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 3000); // Reset after 3s
+      setTimeout(() => setSubscribed(false), 3000);
       setEmail("");
     }
   };
 
-  // Animation variants
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -39,7 +39,7 @@ const Footer = () => {
 
   return (
     <motion.footer
-      className="site-footer bg-dark text-white py-5"
+      className="site-footer"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
@@ -160,15 +160,14 @@ const Footer = () => {
             >
               <motion.input
                 type="email"
-                className="form-control rounded-0"
+                className="form-control"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                whileFocus={{ scale: 1.02, borderColor: "#d4af37" }}
-                style={{ maxWidth: "250px" }}
+                whileFocus={{ scale: 1.02 }}
               />
               <motion.button
-                className="btn btn-gold rounded-0 px-4"
+                className="btn btn-gold"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
@@ -185,7 +184,7 @@ const Footer = () => {
                   exit={{ opacity: 0, y: -10 }}
                 >
                   Thanks for subscribing! Check your inbox soon.
-                </motion.p>
+                </p>
               )}
             </AnimatePresence>
           </motion.div>
@@ -208,61 +207,6 @@ const Footer = () => {
           </motion.a>
         </motion.div>
       </div>
-
-      {/* Enhanced Styles */}
-      <style jsx>{`
-        .site-footer {
-          background: linear-gradient(180deg, #212529 0%, #1a1e22 100%);
-          position: relative;
-          overflow: hidden;
-        }
-        .site-footer::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(
-            circle at top left,
-            rgba(212, 175, 55, 0.1),
-            transparent 70%
-          );
-          pointer-events: none;
-        }
-        .text-gold {
-          color: #d4af37;
-          background: linear-gradient(45deg, #d4af37, #b8860b);
-          -webkit-background-clip: text;
-          background-clip: text;
-        }
-        .hover-text-gold:hover {
-          color: #d4af37 !important;
-          transition: color 0.3s ease;
-        }
-        .btn-gold {
-          background: linear-gradient(45deg, #d4af37, #b8860b);
-          color: #fff;
-          border: none;
-          box-shadow: 0 2px 5px rgba(212, 175, 55, 0.3);
-          transition: all 0.3s ease;
-        }
-        .form-control {
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: #fff;
-          transition: all 0.3s ease;
-        }
-        .form-control:focus {
-          background: rgba(255, 255, 255, 0.15);
-          border-color: #d4af37;
-          box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
-          color: #fff;
-        }
-        .form-control::placeholder {
-          color: #aaa;
-        }
-      `}</style>
     </motion.footer>
   );
 };
