@@ -179,7 +179,6 @@ const Product = () => {
 
   return (
     <>
-      <Navbar />
       <div className="container">
         <div className="row">
           {loading || !product ? <Loading /> : <ShowProduct />}
@@ -193,7 +192,6 @@ const Product = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
