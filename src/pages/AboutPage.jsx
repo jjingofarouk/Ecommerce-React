@@ -5,7 +5,6 @@ import "./AboutPage.css"; // Custom styles for a powerful design
 const AboutPage = () => {
   return (
     <>
-      <Navbar />
       <div className="about-container">
         {/* Hero Section */}
         <section className="about-hero">
@@ -104,7 +103,8 @@ const AboutPage = () => {
           </div>
         </section>
       </div>
-      <Footer />
+
+
     </>
   );
 };
