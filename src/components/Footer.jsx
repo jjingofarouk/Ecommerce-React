@@ -17,7 +17,7 @@ import {
   Instagram,
   WhatsApp,
   YouTube,
-  Skype,
+  Message,
   ArrowUpward,
 } from "@mui/icons-material";
 import "./Footer.css";
@@ -140,7 +140,7 @@ const Footer = () => {
                     icon: YouTube,
                     url: "https://youtube.com/@frankshoeworld",
                   },
-                  { icon: Skype, url: "skype:frankshoeworld?call" },
+                  { icon: Message, url: "skype:frankshoeworld?call" },
                 ].map((social, index) => (
                   <motion.div
                     key={index}
